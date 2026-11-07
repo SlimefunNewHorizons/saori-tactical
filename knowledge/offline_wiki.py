@@ -134,23 +134,42 @@ OFFLINE_WIKI_ENTRIES: List[Dict] = [
     {
         "id": "WIKI-ENERGIA-AUTO-12V-220V",
         "category": "ENERGIA_Y_COMUNICACIONES",
-        "title": "Generación de 220V AC con Alternador y Batería de Automóvil en Ralentí",
-        "summary": "Uso del motor del auto como generador de 220V AC (Estándar Chile) con inversor directo a bornes para alimentar PC, router, iluminación y refrigerador.",
+        "title": "Generación de 220V AC con Alternador de Automóvil (Ej: Kia Morning 2014)",
+        "summary": "Uso del motor del auto en ralentí como generador eléctrico continuo de 220V AC con inversor directo a bornes. Entrega de 500W a 600W útiles continuos.",
         "materials": [
-            "Automóvil con combustible en estanque",
-            "Inversor 12V DC a 220V AC (mínimo 500W a 1500W, idealmente Onda Pura)",
-            "Cables gruesos de cobre (6 a 4 AWG o 16 mm² con pinzas de borne de alta presión)",
-            "Cinta aisladora de PVC y cinta vulcanizada (auto-amalgamante)",
-            "Manguera de plástico de jardín para protección mecánica de cables vivos"
+            "Automóvil (Ej: Kia Morning 2014 con estanque de 35L)",
+            "Inversor de Corriente 12V DC a 220V AC (500W a 1000W Onda Pura / Pure Sine Wave)",
+            "Cables con pinzas tipo caimán de batería de alta presión (mínimo 6 AWG / 16 mm²)",
+            "Alargador eléctrico convencional de 220V con zapatilla de enchufes",
+            "Cinta aisladora o manguera plástica para empalmes de emergencia"
         ],
         "blueprints_steps": [
-            "1. SEGURIDAD Y VENTILACIÓN: Estacionar el auto al AIRE LIBRE. NUNCA en un garaje cerrado o semicerrado (el monóxido de carbono asfixia en minutos).",
-            "2. CONEXIÓN DIRECTA A BATERÍA: Conectar los cables del inversor DIRECTAMENTE a los bornes (+) y (-) de la batería del auto con perno o pinza de alta presión. NUNCA usar la toma del encendedor de cigarrillos interior (los fusibles del auto son de 10A-15A y se queman a más de 120W; conectar directo permite extraer de 60A a 100A continuos = 700W a 1200W).",
-            "3. ENCENDIDO DEL MOTOR: Arrancar el motor del auto y dejarlo en ralentí (700-900 RPM). Con el motor encendido, el alternador entrega continuamente 13.8V a 14.4V y entre 60A y 120A, alimentando las cargas sin descargar la batería.",
-            "4. GESTIÓN DE CARGAS CRÍTICAS: Computador/Torre (~150W-250W), TV/Iluminación (~30W-80W). Para Refrigerador: Consume 150W continuos, pero el arranque del compresor tiene un PICO INDUCTIVO de 800W a 1500W durante 2 segundos; requiere inversor con buena capacidad surge.",
-            "5. EMPALMES RÚSTICOS Y AISLACIÓN SIN ENCHUFES: Si no hay enchufes hembra, pelar 3 cm de cobre. Hacer empalme militar (Western Union) trenzando firmemente. Aislar CADA CONDUCTOR POR SEPARADO con mínimo 6 vueltas de cinta aisladora o introduciéndolo en un trozo de manguera de jardín. Separar físicamente los dos conductores vivos de 220V al menos 10 cm con amarras para evitar cortocircuitos mortales."
+            "1. CONCEPTO: ¿DE DÓNDE SALE LA ENERGÍA? El alternador del auto está conectado directamente por cables gruesos de fábrica a los bornes de la batería. No existe un enchufe aparte para el alternador: al conectar las pinzas a los bornes (+) y (-) de la batería con el motor encendido, estás extrayendo directamente la energía que el alternador genera en tiempo real.",
+            "2. CAPACIDAD DEL KIA MORNING 2014: Su alternador de fábrica entrega 70 Amperios (70A) a 14V = 980W brutos. El vehículo consume ~250W para su propia inyección y bujías. Te quedan entre 500W y 600W NETOS continuos (suficiente para PC de escritorio RTX 4060, router, luces LED y recarga de celulares).",
+            "3. ¿DÓNDE SE COLOCAN LAS PINZAS? El inversor tiene dos cables: Pinza ROJA al borne POSITIVO (+) de la batería del auto; Pinza NEGRA al borne NEGATIVO (-) de la batería. El inversor es el 'adaptador' intermedio: recibe los 12V DC del auto y los transforma internamente a 220V AC en sus enchufes hembra.",
+            "4. SECUENCIA DE ENCENDIDO: (a) Conectar pinzas con el inversor apagado. (b) Arrancar el motor del Kia Morning y dejarlo en ralentí (700-900 RPM al aire libre). (c) Encender el interruptor del inversor. (d) Conectar el enchufe del computador o alargador a la toma de 220V del inversor.",
+            "5. AUTONOMÍA DE COMBUSTIBLE: El motor 1.0L/1.2L del Kia Morning al ralentí gasta aprox. 0.6 litros de bencina por hora. Con el estanque lleno de 35 litros, tienes hasta 58 HORAS CONTINUAS de electricidad (más de 2 días seguidos)."
         ],
-        "engineering_notes": "Un auto en ralentí consume aprox. 0.8 a 1.2 litros de bencina por hora. Con medio estanque (25 litros) se puede mantener la PC, comunicaciones y radio encendidas por más de 24 horas continuas."
+        "engineering_notes": "NUNCA usar el enchufe del encendedor de cigarrillos interior para más de 120W porque se quema el fusible. Las pinzas SIEMPRE van al compartimento del motor directo a los bornes de la batería."
+    },
+    {
+        "id": "WIKI-INYECCION-CASA-LUCES",
+        "category": "ENERGIA_Y_COMUNICACIONES",
+        "title": "Inyección de Energía a la Red de la Casa para Encender Luces (Protocolo Seguro)",
+        "summary": "Método para energizar los circuitos de iluminación del hogar desde el inversor del auto sin quemar equipos ni electrocutar a técnicos de la red pública.",
+        "materials": [
+            "Inversor 12V a 220V conectado al auto",
+            "Cable de inyección con enchufe macho de 220V (o cable conectado directo a la salida de un automático de luces)",
+            "Acceso al Tablero Eléctrico General de la vivienda"
+        ],
+        "blueprints_steps": [
+            "1. REGLA DE ORO OBLIGATORIA (AISLAMIENTO TOTAL): Ir al tablero eléctrico general y BAJAR EL AUTOMÁTICO GENERAL (Disyuntor principal de la compañía eléctrica y diferencial). Si no se baja, la corriente del auto saldrá hacia los postes de la calle pudiendo electrocutar mortalmente a los linieros que reparan las líneas caídas, y cuando vuelva la luz de la calle, tu inversor EXPLOTARÁ en llamas al chocar las dos fases.",
+            "2. APAGAR CIRCUITOS DE FUERZA: Bajar los automáticos de enchufes de alto consumo (horno, hervidor, lavadora, secadora, estufas eléctricas). El alternador del Kia Morning no soporta electrodomésticos de calor (1500W-2000W).",
+            "3. DEJAR ARRIBA SOLO EL CIRCUITO DE ILUMINACIÓN: Mantener arriba únicamente el disyuntor pequeño (generalmente de 6A o 10A) etiquetado como 'ALUMBRADO' o 'LUCES'.",
+            "4. CONEXIÓN DEL INVERSOR AL CIRCUITO: Conectar un alargador desde la salida de 220V del inversor del auto hacia un enchufe de la casa perteneciente al circuito que se desea energizar. Con ampolletas LED (que consumen solo 7W a 9W cada una), encender 10 ampolletas en toda la casa consume apenas 80 Watts, trabajando el auto totalmente descansado.",
+            "5. RESTABLECIMIENTO DE RED PÚBLICA: Cuando regrese la luz a los vecinos, ANTES de subir el automático general de la calle: (a) Desconectar el inversor del auto por completo, (b) Subir el automático general."
+        ],
+        "engineering_notes": "La forma profesional y permanente de hacer esto es instalar un Conmutador de Transferencia Manual (Transfer Switch 1-0-2) en el tablero eléctrico, el cual físicamente imposibilita que la red pública y el auto se toquen jamás."
     },
     {
         "id": "WIKI-ROUTER-12V-DIRECTO",

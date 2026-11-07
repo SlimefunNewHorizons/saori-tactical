@@ -1,0 +1,7 @@
+# SAORI TACTICAL - Core Dependencies
+networkx>=3.0
+RapidFuzz>=3.0
+python-dotenv>=1.0.0
+elevenlabs>=2.0.0
+# Hardware opcional para radio mallada LoRa:
+# meshtastic>=2.7.0

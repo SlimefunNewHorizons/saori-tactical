@@ -826,6 +826,16 @@ class TacticalWebHandler(http.server.BaseHTTPRequestHandler):
                 if devs:
                     res = self.dispatcher.android.scan_wifi_from_device(devs[0]["id"])
             self.wfile.write(json.dumps(res, ensure_ascii=False).encode("utf-8"))
+        elif self.path == "/api/mesh":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            data = {"node_id": "SAORI_CITADEL_CORE", "peers": [], "mailbox": []}
+            if self.dispatcher and hasattr(self.dispatcher, "mesh_p2p"):
+                data["node_id"] = self.dispatcher.mesh_p2p.node_id
+                data["peers"] = self.dispatcher.mesh_p2p.get_active_peers()
+                data["mailbox"] = self.dispatcher.mesh_p2p.get_mailbox()
+            self.wfile.write(json.dumps(data, ensure_ascii=False).encode("utf-8"))
         else:
             self.send_response(404)
             self.end_headers()
@@ -876,6 +886,15 @@ class TacticalWebHandler(http.server.BaseHTTPRequestHandler):
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
             self.wfile.write(json.dumps({"output": output}, ensure_ascii=False).encode("utf-8"))
+
+        elif self.path == "/api/mesh/send":
+            msg = data.get("message", "")
+            priority = data.get("priority", "NORMAL")
+            ok = self.dispatcher.mesh_p2p.broadcast_message(msg, priority=priority) if self.dispatcher and hasattr(self.dispatcher, "mesh_p2p") else False
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(json.dumps({"success": ok}, ensure_ascii=False).encode("utf-8"))
 
         else:
             self.send_response(404)

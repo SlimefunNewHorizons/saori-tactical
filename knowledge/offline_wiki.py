@@ -249,6 +249,27 @@ OFFLINE_WIKI_ENTRIES: List[Dict] = [
             "4. REUTILIZACIÓN DE PARÁBOLA SATELITAL (DIRECTV / ENTEL): Retirar el LNB del soporte central de la antena parabólica. Colocar la antena de un radio portátil (Baofeng) o un dipolo de 2.4 GHz en el punto focal exacto apuntando hacia la parábola. Permite enlaces Wi-Fi o radio VHF/UHF a más de 10 kilómetros apuntando hacia la cima del cerro o repetidora."
         ],
         "engineering_notes": "La polarización debe coincidir con la de la estación receptora: si es radio VHF/UHF o repetidora, el dipolo debe montarse en posición VERTICAL."
+    },
+    {
+        "id": "WIKI-RED-CYBERPUNK-MESH-LOCAL",
+        "category": "ENERGIA_Y_COMUNICACIONES",
+        "title": "Arquitectura de Red Mesh Cyberpunk P2P (Blackwall Citadel Off-Grid)",
+        "summary": "Creación de una red local autosuficiente punto a punto (P2P) y malla sin router ni internet entre PC RTX 4060, Laptop Nova, Poco X3 Pro, Poco X8 Pro y Galaxy Tab S6 Lite.",
+        "materials": [
+            "Dispositivos Wi-Fi del usuario (Laptop Nova, Poco X3 Pro, Poco X8 Pro, Tab S6 Lite, PC RTX 4060)",
+            "Software P2P abierto: Reticulum Network Stack (RNS), Briar, Syncthing, Kiwix, OsmAnd",
+            "Hardware opcional de expansión: Módulos ESP32 LoRa 915MHz (Meshtastic) o Baofeng UV-5R con cable APRS-K1"
+        ],
+        "blueprints_steps": [
+            "1. CONCEPTO CYBERPUNK (EL MURO NEGRO / BLACKWALL): En el colapso de la red global, la supervivencia digital se basa en 'Citadelas' locales: redes autónomas cerradas donde cada dispositivo actúa como nodo emisor, repetidor y receptor sin depender de proveedores de internet (ISP) ni servidores centrales.",
+            "2. NODO CENTRAL DE DATOS (CITADEL VAULT): PC local con RTX 4060 corriendo SAORI Tactical, Ollama y el Dashboard Web (:8090). Emite la red Wi-Fi 'SAORI-CITADEL' mediante el Punto de acceso móvil de Windows (Hotspot) o router de 12V.",
+            "3. NODO REPETIDOR DE FRONTERA (LAPTOP NOVA): Ubicar la laptop Nova en un punto alto (segundo piso, balcón o ventana alta). Conectada por Wi-Fi o cable Ethernet al PC central, Nova repite la señal Wi-Fi hacia el exterior mediante puente de red (Network Bridging) o un segundo adaptador Wi-Fi USB, extendiendo la cobertura a 150-300 metros a la redonda.",
+            "4. NODOS SCOUT DE PATRULLA (POCO X3 PRO Y POCO X8 PRO): Llevan instaladas aplicaciones P2P como Briar (mensajería encriptada por Wi-Fi local y Bluetooth Mesh). Si un operador camina fuera del alcance del Wi-Fi de la casa, se activa el protocolo Store-and-Forward (DTN / Sneakernet): los mensajes y reportes se guardan en la memoria flash del teléfono y, al cruzarse con otro teléfono o regresar al radio de la casa, los paquetes se sincronizan de forma invisible.",
+            "5. CONSOLA TÁCTIL DE MANDO (GALAXY TAB S6 LITE): Conectada a la red Wi-Fi, muestra el panel web de SAORI, el buzón de reportes de campo (SITREP) y mapas topográficos compartidos, permitiendo apagar el monitor grande del PC para ahorrar 150W de electricidad.",
+            "6. PROTOCOLO RETICULUM (RNS / NOMADNET / SIDEBAND): Protocolo de red criptográfico P2P para el apocalipsis. No usa IPs ni DNS; las direcciones son hashes criptográficos. Funciona sobre Wi-Fi, Bluetooth o radio LoRa, enrutando paquetes automáticamente a través de múltiples saltos (multi-hop).",
+            "7. SALIR DE LA LIMITACIÓN DEL WI-FI (RADIO DE LARGO ALCANCE 10-50 KM): Para romper el límite de 100m del Wi-Fi convencional de los teléfonos, se acopla un módulo Meshtastic LoRa de 915 MHz ($25) por Bluetooth al Poco X3 Pro o por USB al PC. Con una pequeña antena en el techo, los mensajes de chat P2P viajan a más de 15 km rebotando de cerro a cerro sin red celular."
+        ],
+        "engineering_notes": "Wi-Fi y Bluetooth no requieren permisos ni licencias. Una red mesh de 4 saltos (PC -> Nova -> Poco X8 -> Poco X3) cubre más de 800 metros lineales en línea visual usando solo los chips de fábrica de tus dispositivos."
     }
 ]
 

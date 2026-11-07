@@ -51,6 +51,7 @@ from brain.pc_tools import PCTacticalTools
 from brain.voice_engine import TacticalVoiceEngine
 from brain.token_saver import TokenSaver
 from comms.android_bridge import AndroidSensorBridge
+from comms.mesh_p2p import TacticalMeshP2P
 from ui.hud_terminal import TacticalHUD
 from ui.web_server import start_emergency_web_server
 
@@ -66,12 +67,16 @@ class SaoriTacticalCore:
         self.mesh = MeshtasticBridge()
         self.pc_tools = PCTacticalTools()
         self.android = AndroidSensorBridge()
+        self.mesh_p2p = TacticalMeshP2P(node_id="SAORI_CITADEL_CORE", node_role="VAULT_SERVER", web_port=8090)
+        self.mesh_p2p.start()
 
     def get_status(self) -> dict:
         status = self.net_sentinel.evaluate_environment()
         status["active_model"] = self.llm.get_active_model_info()
         status["vram_models"] = self.llm.get_vram_status()
         status["android_devices"] = self.android.list_devices() if self.android.is_adb_available() else []
+        status["mesh_peers"] = self.mesh_p2p.get_active_peers()
+        status["mailbox_count"] = len(self.mesh_p2p.mailbox)
         return status
 
     def set_ai_role(self, role: str) -> bool:
@@ -396,7 +401,7 @@ def interactive_cli():
 
 def main():
     parser = argparse.ArgumentParser(description="SAORI TACTICAL // Emergency, Survival & RF AI Operator")
-    parser.add_argument("command", nargs="?", choices=["query", "radio", "morse", "wiki", "pc", "role", "unload", "web", "android"], help="Comando rápido de ejecución directa")
+    parser.add_argument("command", nargs="?", choices=["query", "radio", "morse", "wiki", "pc", "role", "unload", "web", "android", "mesh"], help="Comando rápido de ejecución directa")
     parser.add_argument("args", nargs="*", help="Argumentos del comando")
     parser.add_argument("--role", type=str, default="tactical", choices=["tactical", "coder", "analyst"], help="Rol de modelo IA a emplear")
     parser.add_argument("--port", type=int, default=8090, help="Puerto del servidor web táctico")
@@ -514,6 +519,35 @@ def main():
         else:
             info = core.llm.get_active_model_info()
             print(f"Rol activo: {core.llm.active_role} -> {info['name']} ({info['model']})")
+
+    elif parsed.command == "mesh":
+        sub = parsed.args[0].lower() if parsed.args else "status"
+        if sub == "send":
+            msg_text = " ".join(parsed.args[1:])
+            if not msg_text:
+                print("Uso: saori.bat mesh send <mensaje_alerta>")
+                return
+            if core.mesh_p2p.broadcast_message(msg_text, priority="ALERTA"):
+                print(f"📡 Mensaje SITREP emitido a la malla local: '{msg_text}'")
+            else:
+                print("❌ Error al emitir mensaje por broadcast.")
+        else:
+            peers = core.mesh_p2p.get_active_peers()
+            print("╔══════════════════════════════════════════════════════════╗")
+            print("║     RED MALLADA CYBERPUNK P2P (BLACKWALL CITADEL)        ║")
+            print("╚══════════════════════════════════════════════════════════╝")
+            print(f"Nodo Local: {core.mesh_p2p.node_id} [{core.mesh_p2p.node_role}]")
+            print(f"Nodos Activos en la Malla Local: {len(peers)}")
+            if peers:
+                for p in peers:
+                    print(f" • [{p['status']}] {p['node_id']} (IP: {p['ip']}:{p['web_port']}) Rol: {p['role']} Latencia: {p['latency_sec']}s")
+            else:
+                print(" (Esperando balizas UDP de Laptop Nova, tablets o teléfonos en la subred)")
+            
+            box = core.mesh_p2p.get_mailbox()
+            print(f"\nBuzón de Mensajes & SITREP (Store-and-Forward): {len(box)} mensajes")
+            for m in box[-5:]:
+                print(f" 📨 [{m['sender']} @ {m['sender_ip']}]: {m['content']}")
 
     elif parsed.command == "unload":
         core.unload_vram()

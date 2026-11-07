@@ -1,0 +1,10 @@
+[
+  {
+    "id": "sitrep_1794079872221",
+    "sender": "SAORI_CITADEL_CORE",
+    "sender_ip": "127.0.0.1",
+    "timestamp": 1794079872.221639,
+    "content": "SITREP 01: NODO CENTRAL EN LINEA",
+    "priority": "ALERTA"
+  }
+]
